@@ -11,3 +11,6 @@ def bad_request(request, exception):
 
 def response_forbidden(request, exception):
     return render(request, 'core/403.html', status=403)
+
+def csrf_failure(request, reason=''):
+    return render(request, 'core/403csrf.html', status=403)
