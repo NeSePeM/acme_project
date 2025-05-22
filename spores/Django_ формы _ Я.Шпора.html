@@ -1,0 +1,898 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Django: формы | Я.Шпора</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<link rel="apple-touch-icon" sizes="180x180" href="../static/ico/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../static/ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../static/ico/favicon-16x16.png">
+<link rel="manifest" href="../static/ico/site.webmanifest">
+<link rel="mask-icon" href="../static/ico/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="../static/ico/favicon.ico">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config" content="../static/ico/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+<link href="../prism/prism.css" rel="stylesheet" />
+<script src="../prism/prism.js"></script>
+<link href="../static/custom.css" rel="stylesheet" />
+<script src="../static/custom.js"></script>
+<base target="_blank">
+</head><body><article id="60b20489-ce5b-4d21-a63e-2f7cf5dc49ac" class="page sans"><header><h1 class="page-title">Django: формы<strong> | Я.Шпора</strong></h1><p class="page-description"></p></header><div class="page-body"><h2 id="6c4daa2e-5737-421a-ba8d-111b525c3ac1" class="">Формы в HTML</h2><p id="6d689ef0-e1ae-4427-a573-6200ae07eec5" class=""><strong>HTML-форма</strong> — это набор HTML-элементов, которые отрисовывают в браузере интерфейс для ввода информации. При отправке формы браузер отправляет на сервер запрос, передавая в нём данные, которые пользователь ввёл в форму. Адрес и тип запроса описываются в атрибутах тега <code>&lt;form&gt;</code>. </p><p id="19cc4784-a3fd-466c-aae9-20213e2485df" class="">В самом простом варианте вёрстки HTML-код формы может выглядеть так:</p><pre id="b59e21d3-3a8c-47a0-a105-2d32d1a98c28" class="code"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">...
+&lt;form&gt;  
+  &lt;input type=&quot;text&quot; name=&quot;user_name&quot;&gt; &lt;!-- Поле ввода --&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;Отправить&quot;&gt; &lt;!-- Кнопка для отправки формы --&gt;
+&lt;/form&gt;
+...</code></pre><p id="52cffd5d-b470-4213-a3c5-b158565e6d40" class=""><code>&lt;form&gt;</code> — парный тег, который определяет начало и конец формы в коде. </p><p id="a893df92-e314-4d12-938e-fa9b6b2b9160" class=""><code>&lt;input&gt;</code> — многофункциональный одиночный тег, который в зависимости от указанных атрибутов может отрисовываться по-разному, например — как поле для ввода текста, кнопка, переключатель, флажок. </p><h3 id="bbbc1235-0742-40fa-b6cf-0b531480cfb7" class="">Атрибуты тега &lt;input&gt;</h3><p id="68c93d68-f505-4537-8053-7819c7e53b47" class="">Атрибут <code>type</code> тега <code>&lt;input&gt;</code> сообщает браузеру, в каком виде отображать этот элемент. </p><p id="25b29a74-27f8-4d5b-9701-ca8226e48c13" class="">Вот лишь некоторые значения, которые может принимать атрибут <code>type</code>:</p><figure id="4c0e50d6-7988-4a83-bc91-4fcd30d550ee" class="image"><a href="Django%20%D1%84%D0%BE%D1%80%D0%BC%D1%8B%20%D0%AF%20%D0%A8%D0%BF%D0%BE%D1%80%D0%B0%2060b20489ce5b4d21a63e2f7cf5dc49ac/S04_02.png"><img style="width:2160px" src="Django%20%D1%84%D0%BE%D1%80%D0%BC%D1%8B%20%D0%AF%20%D0%A8%D0%BF%D0%BE%D1%80%D0%B0%2060b20489ce5b4d21a63e2f7cf5dc49ac/S04_02.png"/></a></figure><p id="b9a0a740-0e87-45c1-9c20-f688657d1c8b" class="">Если в <code>type</code> указано, что поле должно принимать только специфическое содержимое (например <code>number</code> или <code>email</code>), то перед отправкой данных браузер проверит, соответствует ли введённая информация требованиям. Если в поле будут обнаружены неразрешённые значения — форма не будет отправлена, а пользователь получит сообщение о проблеме.<div class="indented"><p id="e71275af-9b95-49f8-9f85-152b5000c926" class="">
+</p></div></p><figure id="9d95d711-b56c-4bd8-ad5b-a31b645aa23e" class="image"><a href="Django%20%D1%84%D0%BE%D1%80%D0%BC%D1%8B%20%D0%AF%20%D0%A8%D0%BF%D0%BE%D1%80%D0%B0%2060b20489ce5b4d21a63e2f7cf5dc49ac/132.png"><img style="width:2880px" src="Django%20%D1%84%D0%BE%D1%80%D0%BC%D1%8B%20%D0%AF%20%D0%A8%D0%BF%D0%BE%D1%80%D0%B0%2060b20489ce5b4d21a63e2f7cf5dc49ac/132.png"/></a></figure><p id="d9a6d4a9-af97-4d88-a61a-6f155e963ba2" class="">Остальные атрибуты тега <code>&lt;input&gt;</code>:</p><ul id="a68543a6-5943-4cda-b72d-33ca2444d988" class="bulleted-list"><li style="list-style-type:disc">Атрибут <code>name</code> — имя элемента; при отправке данных на сервер <code>name</code> преобразуется в ключ для значения, которое ввёл пользователь.</li></ul><ul id="7d046044-4bca-4e9c-8ccf-81a7f81282b7" class="bulleted-list"><li style="list-style-type:disc">Атрибут <code>required</code> делает поле обязательным для заполнения. </li></ul><ul id="2d3f7bbd-a596-4f47-8e95-220fe1574715" class="bulleted-list"><li style="list-style-type:disc">Атрибут <code>value</code>: на кнопках <code>&lt;input type=&quot;submit&quot;&gt;</code> или <code>&lt;input type=&quot;reset&quot;&gt;</code> — определяет надпись на кнопке; для полей ввода — позволяет заранее заполнить их содержимым по умолчанию.</li></ul><h3 id="59220290-b816-4ed1-b170-471aabad7aec" class="">Заголовки полей, тег &lt;label&gt;</h3><p id="2b214f67-9a19-419f-8e1c-f0a567261db9" class="">Для удобства пользователей к полям формы можно добавить название; это делается с помощью тега <code>&lt;label&gt;</code>. </p><pre id="3daccd4b-3832-45c9-b579-a5f9f0045fcf" class="code"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;form&gt;
+  &lt;label&gt;Введите имя: &lt;/label&gt;
+  &lt;input type=&quot;text&quot; name=&quot;user_name&quot; required&gt;  
+  &lt;input type=&quot;submit&quot; value=&quot;Отправить&quot;&gt;
+&lt;/form&gt;</code></pre><p id="33ee764a-c70a-46d7-9350-c23ba228067c" class="">Содержимое тега <code>&lt;form&gt;</code> можно форматировать с помощью любых HTML-тегов. Например, при помощи тега <code>&lt;p&gt;&lt;/p&gt;</code>: </p><pre id="0213c0b1-503f-49ef-afd7-c77c4d4a89d0" class="code"><code class="language-HTML" style="white-space:pre-wrap;word-break:break-all">&lt;form&gt;
+  &lt;p&gt;
+    &lt;label&gt;Введите имя: &lt;/label&gt;
+    &lt;input type=&quot;text&quot; name=&quot;user_name&quot; required&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label for=&quot;is_human&quot;&gt;Я человек&lt;/label&gt;
+    &lt;input id=&quot;is_human&quot; type=&quot;checkbox&quot; name=&quot;human&quot;&gt;&lt;br&gt;
+    &lt;small&gt;Не ставьте галочку, если вы не человек&lt;/small&gt;
+  &lt;/p&gt;
+  &lt;p&gt;&lt;input type=&quot;submit&quot; value=&quot;Отправить&quot;&gt;&lt;/p&gt;
+&lt;/form&gt;</code></pre><h3 id="e64d487c-61f1-4954-ae11-99aa9276bca0" class="">Атрибуты тега &lt;form&gt;</h3><p id="4fa13f4b-b4e2-4d30-bbc6-c23f85c371cf" class="">Самые часто используемые атрибуты тега <code>&lt;form&gt;</code>:</p><p id="0df22e43-e96d-4438-a944-cddd8e60d3f8" class=""><code>method</code> (тип запроса), например: <code>&lt;form method=&quot;post&quot;&gt;</code>;</p><p id="c126752d-48e3-4829-8d3b-925c96703b61" class=""><code>action</code> (адрес, куда будет отправлен запрос), например: <code>&lt;form action=&quot;https://yandex.ru/search/&quot;&gt;</code>.</p><p id="db554c31-8298-4888-b529-85a477eb9962" class="">Если эти атрибуты не указаны, то применяются настройки по умолчанию: отправляется GET-запрос на тот же адрес, где расположена страница с формой. </p><h2 id="f6d32c55-484f-4e46-b531-ee7c3b2df174" class="">Формы в Django</h2><p id="00212486-ed18-4e01-b80c-05671c06decb" class="">Формы в Django генерируются из объектов классов, унаследованных от класса <code>Form</code> из пакета <code>django.forms</code>. Объект формы передаётся в шаблонизатор, а в шаблонизаторе генерируется HTML-код веб-формы.</p><h3 id="6765fd26-baca-4137-8212-a48a351ace05" class="">К<strong>ласс Forms</strong></h3><p id="521ec607-cff8-4726-9110-079773bc2749" class="">Чтобы создать форму в Django, нужно объявить класс-наследник от класса <code>Form</code> из пакета <code>django.forms</code>. </p><pre id="7b2d2c30-0bb3-45e3-9e3c-3bc47f202f24" class="code"><code class="language-Python">from django import forms
+
+
+class BirthdayForm(forms.Form):
+    first_name = forms.CharField(max_length=20)
+    last_name = forms.CharField(required=False)
+    birthday = forms.DateField()</code></pre><p id="0a6f12e0-2e19-42ba-89bb-797a83897374" class="">Объект формы передаётся из view-функции в шаблон в словаре контекста под ключом <code>form</code> (это традиционное название, хотя назвать этот ключ можно как угодно):</p><pre id="bc1ab658-316c-4d45-894d-c1bec6e0931a" class="code"><code class="language-Python"># views.py
+from django.shortcuts import render
+
+# Импортируем класс BirthdayForm, чтобы создать экземпляр формы.
+from .forms import BirthdayForm
+
+
+def birthday(request):
+    # Создаём объект класса формы.
+    form = BirthdayForm()
+    # Добавляем его в словарь контекста под ключом form:
+    context = {&#x27;form&#x27;: form}
+    # Указываем нужный шаблон и передаём в него словарь контекста.
+    return render(request, &#x27;birthday/birthday.html&#x27;, context)</code></pre><p id="c81976dc-7658-412e-9689-2d5d638d710d" class="">Чтобы отобразить форму в шаблоне, используются двойные фигурные скобки, как и для вывода любой другой переменной в шаблоне:</p><pre id="b7148f16-37c7-4224-98c7-84f52e7e6322" class="code"><code class="language-Python">&lt;!-- templates/birthday/birthday.html --&gt;
+{% extends &quot;base.html&quot; %}
+
+{% block content %}
+  &lt;form&gt;
+    {{ form }}
+    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+  &lt;/form&gt;
+{% endblock %}</code></pre><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="ba41b9f5-7581-4438-9885-3795257730fd"><div style="font-size:1.5em"></div><div style="width:100%">Django не генерирует тег <code>&lt;form&gt;&lt;/form&gt;</code>, его необходимо написать самостоятельно. </div></figure><h3 id="683a01f8-d926-479d-9068-637d8bc63852" class=""><strong>Подписи и подсказки к полям формы</strong></h3><p id="84692d40-963f-410b-90f9-6d61cf7d7aa9" class="">По умолчанию заголовки полей HTML-формы генерируются из имён атрибутов класса формы: имя атрибута <code>first_name</code> превратится в лейбл <em>First name</em>, а <code>last_name</code> — в лейбл <em>Last name</em>.</p><p id="e10f82b5-2aab-45b8-9acf-82c1f5778ab4" class="">Собственные названия для полей можно установить в аргументе <code>label</code>, а подсказку для поля — в аргументе <code>help_text</code> нужного поля.</p><pre id="50726ec9-97af-43d7-950d-7aafde861843" class="code"><code class="language-Python">...
+class BirthdayForm(forms.Form):
+    first_name = forms.CharField(label=&#x27;Имя&#x27;, max_length=20)
+    last_name = forms.CharField(
+        label=&#x27;Фамилия&#x27;, required=False, help_text=&#x27;Необязательное поле&#x27;
+    )
+    birthday = forms.DateField(label=&#x27;Дата рождения&#x27;)</code></pre><h3 id="488120bb-a2af-40b5-b929-f1d4ce6f889f" class="">Типы полей ввода input</h3><p id="bf3cbd2d-c087-45ef-95cd-176f7184959c" class="">В HTML тип поля ввода устанавливается с помощью атрибута type тега <code>&lt;input&gt;</code>. В веб-форме Django настроить тип поля можно с помощью <strong>виджета</strong>, применённого к полю Django-формы. Виджеты импортируются из <code>django.forms</code>.</p><p id="50645fb4-1fd1-4894-ab0a-840c3888079e" class="">Например, поле для даты можно представить на странице в виде календаря:</p><pre id="551abd34-f8fb-40dd-a842-94c5c170aafa" class="code"><code class="language-Python"># birthday/forms.py
+from django import forms
+
+...
+class BirthdayForm(forms.Form):
+    ...
+    birthday = forms.DateField(
+        label=&#x27;Дата рождения&#x27;,
+        # Указываем, что виджет для ввода даты должен быть с типом date.
+        widget=forms.DateInput(attrs={&#x27;type&#x27;: &#x27;date&#x27;})
+    )</code></pre><p id="8edfdeb0-7865-4a13-a685-c26c368ccb84" class="">Виджеты применяются и <a href="https://docs.djangoproject.com/en/3.2/ref/forms/widgets/">для других типов отображения полей</a>. </p><h3 id="76290768-a9f1-48fe-b611-4c7214496c49" class="">Доступ к данным, отправленным из веб-формы</h3><p id="7d126d2c-c681-42fd-bc83-f6bca1b69609" class="">Данные, отправленные из формы, становятся доступны в объекте запроса <code>request</code>, в атрибуте <code>request.GET</code> или <code>request.POST</code>, в зависимости от типа запроса.</p><h3 id="4e44684c-119d-4052-b97e-21f77f02a621" class="">Валидация полученных данных в объекте формы</h3><p id="de386cb3-d1f6-458a-ada8-124086be2683" class="">Для валидации:</p><ul id="73883140-8457-4020-819d-7f21f89e0d08" class="bulleted-list"><li style="list-style-type:disc">данные из запроса (<code>request.GET</code> или <code>request.POST</code>) передают в объект формы:</li></ul><pre id="8674852b-5505-40c2-bad5-0a3cb211698e" class="code"><code class="language-Plain Text">form = BirthdayForm(request.GET)</code></pre><ul id="aee2b35d-cb1f-4a34-889c-9b41340e684b" class="bulleted-list"><li style="list-style-type:disc">затем вызывают метод <code>form.is_valid()</code>: он возвращает <code>True</code>, если данные из запроса соответствуют типам данных, ожидаемым в форме.</li></ul><pre id="3a194e4a-9095-468a-a5c5-06c0e6e6e68b" class="code"><code class="language-Python">def birthday(request):
+    if request.GET:
+        # Передаём параметры запроса в конструктор класса формы.
+        form = BirthdayForm(request.GET)
+        # Если данные валидны...
+        if form.is_valid():
+            # ...то выполняем необходимые действия.
+            pass
+    ...</code></pre><p id="9811c2bf-59c9-4d72-9892-4c368650d872" class="">При успешной валидации Django передаёт полученные в запросе значения полей в специальный словарь <code>form.cleaned_data</code>; ключи словаря совпадают с названиями полей, а значения приведены к нужным типам данных. Для дальнейшей работы значения надо брать из словаря <code>cleaned_data</code>.</p><h3 id="2a3653c3-0e8e-4c03-aeed-0134e892cc3f" class="">Валидация полученных данных в шаблоне</h3><p id="fde3514a-6eab-4b46-8339-3c041e51a2d8" class="">Валидность формы можно проверять и в шаблоне. Для этого используется конструкция <code>{% if form.is_valid %}</code>:</p><pre id="67996ff9-9bdd-41ba-b281-fa7243842523" class="code"><code class="language-Python">{% with data=request.GET %}
+  {% if form.is_valid %}
+    &lt;h2&gt;Привет, {{ data.first_name }} {{ data.last_name}}&lt;/h2&gt;
+  {% endif %}
+{% endwith %}</code></pre><h3 id="3cbb968e-84a2-4d82-bc62-d73c8abdb3cb" class=""><strong>Формы на основе моделей</strong></h3><p id="7a9efb47-f7eb-4533-a7ba-0b3a3ef160a3" class="">При создании формы на основе модели нужно</p><ol type="1" id="6be9797b-fbb0-435a-ada4-fa8f3bc1f56e" class="numbered-list" start="1"><li>Создать класс формы, унаследованный от <code>forms.ModelForm</code>.</li></ol><ol type="1" id="236b7263-4ed9-4e33-8ec8-6ab96543bd61" class="numbered-list" start="2"><li>В подклассе <code>Meta</code> созданного класса указать модель, на основе которой должна быть построена форма.</li></ol><ol type="1" id="ded1cbdc-fc23-4047-a420-fea116beaf2c" class="numbered-list" start="3"><li>Указать поля, которые пользователь должен увидеть в HTML-форме. В форме не обязательно использовать все поля модели. Определить список полей можно с помощью атрибутов <code>fields</code> или <code>exclude</code>:<ul id="89077f49-259c-4ac7-8b09-e58622d8f19b" class="bulleted-list"><li style="list-style-type:disc"><code>fields = (&#x27;first_name&#x27;, &#x27;birthday&#x27;)</code> — в форме будут показаны только перечисленные поля модели;</li></ul><ul id="6f81677c-79d5-4d8f-9bff-c6a3fa9a9eb8" class="bulleted-list"><li style="list-style-type:disc"><code>exclude = (&#x27;last_name&#x27;,)</code> — в форме будут показаны все поля модели, за исключением перечисленных;</li></ul><ul id="8e31b3d2-2b34-4309-8f19-723fa8dee6a8" class="bulleted-list"><li style="list-style-type:disc">если в форме нужно использовать все поля модели, то указывается значение <code>fields = &#x27;__all__&#x27;</code>.</li></ul></li></ol><pre id="ce548276-008f-4ced-976b-315ea7fafc50" class="code"><code class="language-Python"># birthday/forms.py
+from django import forms
+
+# Импортируем класс модели Birthday.
+from .models import Birthday
+
+
+# Для использования формы с моделями наследуемся от forms.ModelForm.
+class BirthdayForm(forms.ModelForm):
+    # Все настройки задаём в подклассе Meta.
+    class Meta:
+        # Указываем модель, на основе которой должна строиться форма.
+        model = Birthday
+        # Указываем, что надо отобразить все поля.
+        fields = &#x27;__all__&#x27;
+        # Указываем виджеты для полей:
+				widgets = {
+            &#x27;birthday&#x27;: forms.DateInput(attrs={&#x27;type&#x27;: &#x27;date&#x27;})
+        }</code></pre><h2 id="389acb75-daea-4b52-86d9-85c4740d5c99" class="">CSRF-токен</h2><p id="633166ab-83ce-4a67-8d47-77b98ae6f536" class="">В Django есть встроенная защита от CSRF: она применяется к формам, запросы из которых изменяют состояние данных на сервере (например, для форм, из которых отправляются POST-, DELETE- и PATCH-запросы).</p><p id="b889d437-70f0-4bb2-a494-7bcb84855672" class="">Защита основана на встраивании в форму CSRF-токена. Токен встраивается через добавление тега <code>{% csrf_token %}</code> в код формы в шаблоне.</p><pre id="1e44ccb2-bd70-4008-b77f-c3ee1ad1476b" class="code"><code class="language-HTML">...
+&lt;!-- Для форм, отправляющих POST-запросы, csrf-токен необходим! --&gt;
+&lt;form method=&quot;post&quot;&gt;  
+  {% csrf_token %}
+  ...
+&lt;/form&gt;
+...</code></pre><h2 id="039fad10-8d56-4119-b183-b78492963808" class=""><strong>Сохранение данных формы в БД</strong></h2><p id="8524de96-46c7-467b-968c-3503a080bf45" class="">Встроенный метод <code>save()</code> класса <code>ModelForm</code> позволяет сохранить данные из формы в БД. После сохранения метод <code>save()</code> возвращает сохранённый объект.</p><pre id="e044a8ff-2f20-4de6-b048-715d7d6f163f" class="code"><code class="language-Python">...
+
+def birthday(request):
+    form = BirthdayForm(request.POST or None)
+    context = {&#x27;form&#x27;: form}
+    if form.is_valid():
+        form.save()
+        ...</code></pre><h3 id="83dfaa75-6852-449c-ab9f-a3b162d8b564" class="">Редактирование объекта модели через форму</h3><p id="138c4572-2d03-425b-a362-0b4ea4a80dbc" class="">Для редактирования объекта через форму необходимо </p><ul id="4fa240ac-e314-4402-9cd0-7c4e9941770d" class="bulleted-list"><li style="list-style-type:disc">получить из POST-запроса <code>id</code> той записи, которую надо изменить, </li></ul><ul id="6751696b-d3fc-496f-8127-d07d30f57532" class="bulleted-list"><li style="list-style-type:disc">извлечь из базы данных объект с этим <code>id</code>,</li></ul><ul id="aa2b8c1c-fae9-48b2-8fb7-fb4958fb9bc5" class="bulleted-list"><li style="list-style-type:disc">передать полученный объект в конструктор формы через параметр <code>instance</code>.</li></ul><pre id="96807bf5-8193-45f5-9b83-c832d84d117f" class="code"><code class="language-Python"># Находим запрошенный объект для редактирования по первичному ключу
+# или возвращаем 404 ошибку, если такого объекта нет.
+instance = get_object_or_404(Birthday, pk=pk)  
+# Связываем форму с найденным объектом: передаём его в аргумент instance.
+form = BirthdayForm(request.POST or None, instance=instance)
+...</code></pre><h3 id="8fb9d8f9-7253-4aff-8385-8828f9fad810" class=""><strong>Кастомный валидатор формы</strong></h3><p id="35fcc0fd-c935-44ff-a1e8-c5a56109bec4" class="">Кастомный валидатор данных — это функция, принимающая на вход данные из формы и выбрасывающая исключение, если валидация не пройдена:</p><pre id="41152cf7-cb86-4e12-9a2b-e2e7d573ec76" class="code"><code class="language-Python"># &lt;app_dir&gt;/validators.py
+# Импортируем класс для работы с датами.
+from datetime import date
+
+# Импортируем ошибку валидации.
+from django.core.exceptions import ValidationError
+
+
+# Пишем функцию-валидатор; на вход она будет принимать дату рождения 
+# и проверять, что значение age укладывается в пределы от 1 до 120.
+def real_age(value: date) -&gt; None:
+    # Считаем разницу в днях между сегодняшним днём и днём рождения
+    # и делим на 365.
+    age = (date.today() - value).days / 365
+    # Если возраст меньше 1 года или больше 120 лет — выбрасываем ошибку валидации.
+    if age &lt; 1 or age &gt; 120:
+        raise ValidationError(
+            &#x27;Ожидается возраст от 1 года до 120 лет&#x27;
+        )</code></pre><p id="a5c9f166-227c-4a89-b8a3-0c50c727832e" class="">В формах, наследуемых от <code>forms.Form</code>, валидатор подключается к классу формы: имя валидатора указывается в описании поля.</p><pre id="2e95a816-18f8-41e9-bab7-2e7d19abc735" class="code"><code class="language-Python"># &lt;имя_приложения&gt;/forms.py
+from django import forms
+
+# Импортируем функцию-валидатор.
+from .validators import real_age
+
+
+class BirthdayForm(forms.Form):
+    first_name = forms.CharField(label=&#x27;Имя&#x27;, max_length=20)
+    last_name = forms.CharField(
+        label=&#x27;Фамилия&#x27;, required=False, help_text=&#x27;Необязательное поле&#x27;
+    )
+    birthday = forms.DateField(
+        label=&#x27;Дата рождения&#x27;,
+        widget=forms.DateInput(attrs={&#x27;type&#x27;: &#x27;date&#x27;}),
+        # В аргументе validators указываем список или кортеж 
+        # валидаторов этого поля (валидаторов может быть несколько).
+        validators=(real_age,),
+    )</code></pre><p id="1928f9f3-d65b-4c24-ada3-32869a70181b" class="">В формах, наследуемых от <code>forms.ModelForm</code>, валидатор подключается прямо к модели, с которой связана форма; имя валидатора указывается в описании поля модели.</p><pre id="7e2ef3e0-38f8-44b8-b424-31aa0ebd3600" class="code"><code class="language-Python">from django.db import models
+
+# Импортируется функция-валидатор.
+from .validators import real_age
+
+
+class Birthday(models.Model):
+    first_name = models.CharField(&#x27;Имя&#x27;, max_length=20)
+    last_name = models.CharField(
+        &#x27;Фамилия&#x27;, max_length=20, help_text=&#x27;Необязательное поле&#x27;, blank=True
+    )
+    # Валидатор указывается в описании поля.
+    birthday = models.DateField(&#x27;Дата рождения&#x27;, validators=(real_age,))</code></pre><h3 id="786c1c1b-93cf-46d6-bee9-eb0f1432d4a1" class=""><strong>Метод clean для полей</strong></h3><p id="133997b2-96b8-47e9-8462-140d6c71f4cc" class="">Дополнительная валидация и очистка данных выполняется <strong>clean-методами</strong> полей формы. Эти методы ничего не принимают на вход: они автоматически берут значения из словаря <code>cleaned_data</code> (он доступен в экземпляре формы <code>self</code>).</p><p id="ac2c2099-07f2-4232-a9c4-d8eee9fd2066" class="">Имена clean-методов составляются по принципу <code>clean_&lt;имя_поля&gt;</code>.</p><ul id="73dd3b6c-3877-4bf1-97c9-2ac022ec3544" class="bulleted-list"><li style="list-style-type:disc">Если clean-метод применяется для валидации — он вернёт то же значение, которое получили (если валидация прошла успешно).</li></ul><ul id="8376c1ff-13f3-4c7f-950a-140956f8ac4b" class="bulleted-list"><li style="list-style-type:disc">Если clean-метод применяется для очистки данных — он вернёт новое, «очищенное» значение. </li></ul><p id="4973fe2e-75b9-4784-9834-3a4e0346cc2c" class="">Значение, которое возвращает clean-метод, записывается в словарь <code>cleaned_data</code>, заменяя прежнее значение.</p><pre id="e947ba42-a4f7-462a-a372-ed988dca5c94" class="code"><code class="language-Python">...
+class BirthdayForm(forms.ModelForm):
+    
+    class Meta:
+        ... 
+
+    def clean_first_name(self):
+        # Получаем значение имени из словаря очищенных данных.
+        first_name = self.cleaned_data[&#x27;first_name&#x27;]
+        # Разбиваем полученную строку по пробелам,
+        # возвращаем только первую часть имени:
+        # если имя состоит из нескольких слов - &quot;очищаем&quot; имя до одного слова.
+        return first_name.split()[0]</code></pre><h3 id="72757b23-158e-4c7b-9c30-cba610e3c712" class=""><strong>Метод clean() для формы</strong></h3><p id="bf08b5d4-974a-4ae7-b40f-a609ff961f66" class="">Метод <code>clean()</code> применяется для валидации взаимозависимых полей.</p><pre id="2b1ac182-e9a2-4de1-87f5-e5ea625472d5" class="code"><code class="language-Python">from django import forms
+# Импортируем класс ошибки валидации.
+from django.core.exceptions import ValidationError
+
+from .models import Birthday
+
+# Проверим, что никто из пользователей не представится именем одного из битлов.
+# Множество с именами участников ливерпульской четвёрки.
+BEATLES = {&#x27;Джон Леннон&#x27;, &#x27;Пол Маккартни&#x27;, &#x27;Джордж Харрисон&#x27;, &#x27;Ринго Старр&#x27;}
+
+
+class BirthdayForm(forms.ModelForm):
+
+    class Meta:    
+        ...
+
+    def clean_first_name(self):
+        ...
+    
+    def clean(self):
+        # Получаем имя и фамилию из очищенных полей формы.
+        first_name = self.cleaned_data[&#x27;first_name&#x27;]
+        last_name = self.cleaned_data[&#x27;last_name&#x27;]
+        # Проверяем, не совпадает ли комбинация имени и фамилии
+        # с именами в множестве BEATLES.
+        if f&#x27;{first_name} {last_name}&#x27; in BEATLES:
+            raise ValidationError(
+                &#x27;Мы тоже любим Битлз, но введите, пожалуйста, своё настоящее имя!&#x27;
+            )</code></pre><p id="b93364d1-c564-4444-9ab6-c6345130a48a" class="">При необходимости метод <code>clean()</code> может возвращать обновлённый словарь <code>cleaned_data</code>, но в листинге проводится только проверка данных, так что возвращать ничего не нужно.</p><p id="dd304d86-3c1d-49ba-8f9e-b428b44c52af" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span>
+<div id="footer">
+	<div id="saying" class="sans">
+		<div class="text"></div> 
+        <div class="src"></div>
+	</div>
+</div>
+</body></html>
