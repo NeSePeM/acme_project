@@ -21,3 +21,7 @@ urlpatterns = [
     ),
     path('birthday/', include('birthday.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'core.views.page_not_found'
+handler400 = 'core.views.bad_request'
+handler403 = 'core.views.response_forbidden'

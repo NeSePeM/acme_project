@@ -1,0 +1,9 @@
+<!-- templates/core/404.html -->
+{% extends "base.html" %}
+{% block title %}Custom 403{% endblock %}
+
+{% block content %}
+  <h1>Custom 403</h1>
+  <p>Доступ к {{ request.path }} запрещён</p>
+  <a href="{% url 'pages:homepage' %}">Идите на главную</a>
+{% endblock %}

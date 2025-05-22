@@ -1,0 +1,9 @@
+<!-- templates/core/404.html -->
+{% extends "base.html" %}
+{% block title %}Custom 400{% endblock %}
+
+{% block content %}
+  <h1>Custom 400</h1>
+  <p>Неправильный запрос: {{ request.path }}</p>
+  <a href="{% url 'pages:homepage' %}">Идите на главную</a>
+{% endblock %}
