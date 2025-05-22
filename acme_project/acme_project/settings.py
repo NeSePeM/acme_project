@@ -8,6 +8,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
+    'localhost',
 ]
 
 INSTALLED_APPS = [
@@ -18,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'birthday.apps.BirthdayConfig',
+    'debug_toolbar',
     'pages.apps.PagesConfig',
     'core.apps.CoreConfig',
     'django_bootstrap5',
@@ -31,6 +33,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'acme_project.urls'
@@ -103,3 +106,10 @@ LOGIN_REDIRECT_URL = 'pages:homepage'
 LOGIN_URL = 'login'
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+
+def show_toolbar(request):
+    return True
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
+}
